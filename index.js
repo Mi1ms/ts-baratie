@@ -17,18 +17,20 @@ if (!checkTypeParam.includes(false) && process.argv.length >= 5 && process.argv[
     // console.log(timeCooking, nbrCooks, time4Replace)
     if (cluster.isMaster) {
         console.log(`Master ${process.pid} is running`);
-      
+        const command = userCommand();
+        
+        
     }
     
-} else {
-    if( process.argv.length < 5) {
-        console.error('Must give 3 arguments, given '+ (process.argv.length - 2));
-        return -1;
-
-    } else if (checkTypeParam) {
+} else { 
+    if (checkTypeParam.includes(false)) {
         console.error('Args must be an number');       
         return -1;
 
+    } else if( process.argv.length < 5) {
+        console.error('Must give 3 arguments, given '+ (process.argv.length - 2));
+        return -1;
+        
     } else if(process.argv[4].length !== 4) {
         console.error('This args must receive milliseconds');       
         return -1;
