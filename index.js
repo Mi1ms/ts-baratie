@@ -2,7 +2,7 @@ const cluster = require('cluster');
 const http = require('http');
 const numCPUs = require('os').cpus().length;
 
-// import { userCommand } from './helpers/command';
+const { userCommand } = require('./helpers/command');
 
 if (process.argv.length >= 5 && process.argv[4].length == 4) {
     const timeCooking = process.argv[2];
@@ -14,14 +14,11 @@ if (process.argv.length >= 5 && process.argv[4].length == 4) {
 } else {
     if( process.argv.length < 5) {
         console.error('Must give 3 arguments, given '+ (process.argv.length - 2));
-
+        return -1;
     } if (process.argv[4].length !== 4) {
         console.error('This args must receive milliseconds');       
+        return -1;
     } else {
         
-    }              
-    return -1;
+    }
 }
-
-// const command = userCommand();
-// console.log(command)
