@@ -4,7 +4,12 @@ const readline = require('readline-sync');
 const userCommand = () => {
     const answer = readline.question('What u want ? ' );
     
-    return getEachCommandsParts(answer);
+    let returnFromGetEachCommandsParts = getEachCommandsParts(answer)
+    let dishs = returnFromGetEachCommandsParts[0]
+    let sizes = returnFromGetEachCommandsParts[1]
+    let count = returnFromGetEachCommandsParts[2]
+    let dishsCount = returnFromGetEachCommandsParts[3]
+    return [dishs, sizes, count, dishsCount];
 }
 
 function getEachCommandsParts(answerU) {
