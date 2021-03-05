@@ -1,23 +1,32 @@
 
 
 const checkIsNumber = (param) => {
-    return /^\d+$/.test(param); 
+    return /^\d+$/.test(param);
 }
 
+let totalCuisine = []
+
 const kitchensCount = (nbPlats, nbWorkers) => {
-    let totalCuisine = []
     nbPlats > 2 * nbWorkers ? newKitchen(1, 2 * nbWorkers) : newKitchen(1, nbPlats)
     let nbPlatsRestant = nbPlats - 2 * nbWorkers
     let count = 1
 
-
-    //TODO: Si il y a des cuisinier dans une cuisine qui ne travaille pas alors que d'autres ont des plats en attente, il faudrait les dispatcher
     do {
         count++
         if (nbPlatsRestant > 2 * nbWorkers) {
             newKitchen(count, 2 * nbWorkers)
         } else {
-            newKitchen(count, nbPlatsRestant)
+            if (nbPlatsRestant < nbWorkers) {
+                for (let i = 0; i < totalCuisine.length; i++) {
+                    if (totalCuisine[i]['index'] === count - 1) {
+                        let workersWithoutDish = nbWorkers - nbPlatsRestant
+                        totalCuisine[i]['nbPlats'] = totalCuisine[i]['nbPlats'] - workersWithoutDish
+                    }
+                }
+                newKitchen(count, nbWorkers)
+            } else {
+                newKitchen(count, nbPlatsRestant)
+            }
         }
         nbPlatsRestant = nbPlatsRestant - 2 * nbWorkers
     } while (nbPlatsRestant > 0)
