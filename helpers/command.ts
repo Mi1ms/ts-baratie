@@ -1,10 +1,10 @@
-const readline = require('readline-sync');
-
+// const readline = require('readline-sync');
+import * as readline from "readline-sync";
 
 const userCommand = () => {
-    const answer = readline.question('What u want ? ' );
+    // const answer = readline.question('What u want ? ' );
     
-    let returnFromGetEachCommandsParts = getEachCommandsParts(answer)
+    let returnFromGetEachCommandsParts: any = getEachCommandsParts('Takoyaki M x3; Udon XL x1; MatchaCookie S x10')
     let dishs = returnFromGetEachCommandsParts[0]
     let sizes = returnFromGetEachCommandsParts[1]
     let count = returnFromGetEachCommandsParts[2]
@@ -12,7 +12,7 @@ const userCommand = () => {
     return [dishs, sizes, count, dishsCount];
 }
 
-function getEachCommandsParts(answerU) {
+function getEachCommandsParts(answerU: string) {
     if(answerU.indexOf(';') !== 0) {
         let splittedAnswerU = answerU.split(';')
         let nbCommands = splittedAnswerU.length
@@ -47,6 +47,6 @@ function getEachCommandsParts(answerU) {
     }
 }
 
-module.exports = {
+export {
     userCommand,
 }
