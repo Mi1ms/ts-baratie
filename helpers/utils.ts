@@ -38,6 +38,22 @@ const newKitchen = (index: number, nbPlat: number) => {
     totalCuisine.push(newKitchenObject);
 }
 
+const convertCommandToJson = (command: any) => {
+    let arr = [];
+    const dish = command[0];
+
+    for (let index = 0; index < dish.length; index++) {
+        
+        const number = command[2][index];
+        for (let nbr = 0; nbr < number; nbr++) {
+            const type = command[0][index];
+            const size = command[1][index];
+            arr.push({type, size})
+        }
+    }
+    return arr;
+}
+
 /*
 Retourner par la
 [
@@ -50,4 +66,5 @@ Retourner par la
 export {
     checkIsNumber,
     kitchensCount,
+    convertCommandToJson
 }

@@ -8,6 +8,7 @@ import  { kitchensCount } from '../helpers/utils';
 export default class Reception {
 
     static numCPUs: any = cpus().length;
+    orders: any;
     kitchenMap:Object = [];
     
     open(timeCooking: number|string, nbrCooks: number, timeReplace: number|string ): any {
@@ -33,8 +34,16 @@ export default class Reception {
         } else {
             process.on('message', (msg) => {
                 if (msg.status == 'start') {
-                    const kitchen = new Kitchen(msg.id, nbrCooks)
+
+                    // the first kitchen
+                    if (msg.id  == 1) {
+                        // calculate nbr kitchen must have
+                        this.orders = kitchensCount(msg.command[msg.command.length-1], nbrCooks);               
+                    }
                     
+                    const kitchen = new Kitchen(msg.id, nbrCooks, this.orders[msg.id-1])
+                    
+
                     // status of kitchens
                     console.log(kitchen.getStatus());
                     kitchen.letsCook(msg.command)

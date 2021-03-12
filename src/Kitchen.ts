@@ -1,8 +1,9 @@
 import cluster, { Cluster } from "cluster";
 import { close } from "fs";
 // import {  Worker, isMainThread, parentPort, workerData} from 'worker_threads';
+// const worker = require('worker_threads');
 
-import  { kitchensCount } from '../helpers/utils';
+import  { kitchensCount, convertCommandToJson } from '../helpers/utils';
 import { Cooker } from "./Cooker";
 
 export class Kitchen {
@@ -10,11 +11,13 @@ export class Kitchen {
     nbrCooker: number;
     status: any;
     cookers: Object = [];
+    nbrOrder: number;
 
-    constructor(myId: number, nbrCooker: number) {
+    constructor(myId: number, nbrCooker: number, order: any) {
         this.numero = myId;
         this.nbrCooker = nbrCooker;
         this.status= "pause";
+        this.nbrOrder= order;
 
         this.create();
     }
@@ -24,6 +27,7 @@ export class Kitchen {
             
             for (let idx = 0; idx < this.nbrCooker; idx++) {
                 cooksMap[idx] = new Cooker(idx+1);
+                // fix error worker
                 // new Worker(__filename);
             } 
             this.cookers = cooksMap;    
@@ -35,44 +39,22 @@ export class Kitchen {
 
     letsCook(command: any) {
         const nbrDish = command[2].length;
-        console.log(command)
+        let orderList = convertCommandToJson(command);
 
-        // calculate nbr kitchen must have
-        const countK = kitchensCount(command[command.length-1], this.nbrCooker);
-
-
-        // for each calcul of kitchen
-        Object(countK).map((info: any) => {
-            
-            if (info.index > 1) {
-                process.send!({status: 'overload'})
-
-            } else {
-                let nbr= 0;
-                for (let index = 1; index < info.nbPlats; index++) {
-                    Object(this.cookers).map((cook: any) => {
-                        
-                        if (command[2][nbr] > 0) {
-                            const dishType: string = command[0][nbr];
-                            const dishSize: string = command[1][nbr];
-                            
-                            cook.dishList.push({type: dishType, size: dishSize})
-
-                        } else { 
-                            nbr++;
-                        }
-                        
-                        // console.log(command[2][nbr]);
-                        
-                        // cook.cook();
-                    })
-                    
-                    // - 1 after loop
-                    // command[command.length-1]--; 
-                } 
+        console.log(this.cookers);
+       
+        // // for each calcul of kitchen
+        Object(this.cookers).map((cooker: Cooker) => {
+            if (cooker.status == 'inactive') {
+                // change status
+                cooker.cook()
+                
+                // set dish to cooker
+                const dishs = orderList.splice(0, 2)
+                cooker.dishList = dishs;
+                cooker.cook()
             }
-        })
-        
+        });
         
     }
 

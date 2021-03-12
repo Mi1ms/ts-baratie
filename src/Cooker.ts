@@ -12,7 +12,10 @@ export class Cooker {
 
     cook(): any {
         if (this.dishList.length > 0) {
+            // change status
+            this.status = 'active'
             
+
         } else {
             console.log('No dish in my TODO list');
         }

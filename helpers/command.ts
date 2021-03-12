@@ -2,9 +2,10 @@
 import * as readline from "readline-sync";
 
 const userCommand = () => {
-    // const answer = readline.question('What u want ? ' );
+    const answer = readline.question('What u want ? ' );
+    // const answer = 'Takoyaki M x3; Udon XL x1; MatchaCookie S x10'
     
-    let returnFromGetEachCommandsParts: any = getEachCommandsParts('Takoyaki M x3; Udon XL x1; MatchaCookie S x10')
+    let returnFromGetEachCommandsParts: any = getEachCommandsParts(answer)
     let dishs = returnFromGetEachCommandsParts[0]
     let sizes = returnFromGetEachCommandsParts[1]
     let count = returnFromGetEachCommandsParts[2]
